@@ -1,0 +1,42 @@
+# OPTIONAL local infrastructure: PostgreSQL (TimescaleDB + pgvector) and Redis.
+# Not needed when you use Supabase (DATABASE_URL) with the in-process live layer (REDIS_URL=memory://).
+# The backend, frontend and fake sensor feeder run on your machine (see README).
+#   docker compose up -d db       local database only
+#   docker compose up -d redis    Redis only (e.g. Supabase + Redis)
+#   docker compose up -d          both
+#   docker compose down           stop (data is kept in the volumes)
+#   docker compose down -v        stop and delete all data
+
+services:
+  db:
+    # PostgreSQL 17 with the TimescaleDB, pgvector and PostGIS extensions pre-installed
+    image: timescale/timescaledb-ha:pg17
+    environment:
+      POSTGRES_PASSWORD: drivesense
+      POSTGRES_DB: drivesense
+    ports:
+      - "5433:5432"          # 5433 on your machine, so it never clashes with a local PostgreSQL
+    volumes:
+      - pgdata:/home/postgres/pgdata/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--save", "60", "1", "--appendonly", "no"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  pgdata:
+  redisdata:

@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+
+# Secrets - never commit your Gemini key
+backend/.env
+.env
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# Simulator route cache (re-created automatically)
+simulator/.route_cache.json
+
+.DS_Store

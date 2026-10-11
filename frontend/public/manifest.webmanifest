@@ -1,0 +1,12 @@
+{
+  "name": "DriveSense",
+  "short_name": "DriveSense",
+  "description": "Monitor your car: live status, trips, driving score, predictive health alerts and an AI driving coach.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#E7EAEC",
+  "theme_color": "#0E6B4E",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
